@@ -1,7 +1,14 @@
 import requests
 import re
-from src.utils.constants import CURRENCY_COUNTRY_API_URL, CURRENCY_RATE_API_KEY, CURRENCY_RATE_API_URL, IP_API_KEY, IP_API_URL
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
+CURRENCY_RATE_KEY = os.getenv("CURRENCY_RATE_API_KEY")
+IP_KEY = os.getenv("IP_API_KEY")
+IP_API_URL = os.getenv("IP_API_URL")
+CURRENCY_RATE_API_URL = os.getenv("CURRENCY_RATE_API_URL")
+CURRENCY_COUNTRY_API_URL = os.getenv("CURRENCY_COUNTRY_API_URL")
 
 def update_states(dict_countries, countries_statistics, response_ip, distance_bs_as_country):
     countries_statistics.add_total_invocations()
@@ -16,10 +23,10 @@ def update_states(dict_countries, countries_statistics, response_ip, distance_bs
     countries_statistics.set_mean_distance(distance_bs_as_country)
 
 def api_calls(ip):
-    response_ip = requests.get(IP_API_URL + ip + IP_API_KEY + '&language=es')
+    response_ip = requests.get(IP_API_URL + ip + '?access_key=' + IP_KEY + '&language=es')
     response_currency = requests.get(CURRENCY_COUNTRY_API_URL + response_ip.json()['country_code'], verify=False)
     currency_code = list(response_currency.json()[0]["currencies"].keys())[0]
-    response_currency_rate = requests.get(CURRENCY_RATE_API_URL + CURRENCY_RATE_API_KEY + '&base=EUR&symbols=' + currency_code)
+    response_currency_rate = requests.get(CURRENCY_RATE_API_URL + '?access_key=' + CURRENCY_RATE_KEY + '&base=EUR&symbols=' + currency_code)
     currency_rate = list(response_currency_rate.json()["rates"].values())[0]
     return response_ip, currency_code, currency_rate
 
