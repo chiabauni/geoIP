@@ -16,7 +16,6 @@ def create_app():
         allow_methods=["*"],
         allow_headers=["*"],
     )
-    ##app.include_router(apps, prefix="/api")
 
     countries_statistics =  Statistic(100000000000000000, 0, 0, 0)
     dict_countries = {}
@@ -56,7 +55,5 @@ def create_app():
     
     return app
 
-
-#if __name__ == "__main__":
 app = create_app()
 
