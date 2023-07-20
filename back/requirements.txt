@@ -1,0 +1,7 @@
+fastapi
+geopy
+regex
+requests
+pytest
+urllib3 <=1.26.15
+uvicorn
